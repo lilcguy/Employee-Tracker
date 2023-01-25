@@ -1,4 +1,19 @@
 const inquirer = require('inquirer');
+const mysql = require('mysql2');
+const cTable = require('console.table');
+
+
+const db = mysql.createConnection(
+    {
+      host: 'localhost',
+      user: 'root', //mysql username
+      password: 'xj9?c011n', //mysql password
+      database: 'books_db'
+    },
+    console.log(`Connected to the books_db database.`)
+  );
+
+
 
 
 inquirer
@@ -15,21 +30,23 @@ inquirer
         console.log(response);
 
         if (response.choice === 'View All Departments') {
-            console.log('a chosen')
+            console.log('View All Departments chosen')
         }
         if (response.choice === 'View all employees') {
-            console.log('b chosen')
+            console.log('View all employees chosen')
         }
         if (response.choice === 'Add a department') {
-            console.log('c chosen')
+            console.log('Add a department chosen')
         } 
         if (response.choice === 'Add a role') {
-            console.log('c chosen')
+            console.log('Add a role chosen')
         } 
         if (response.choice === 'Add an employee') {
-            console.log('c chosen')
+            console.log('Add an employee chosen')
         } 
-        if (response.choice === 'update an employee role') {
-            console.log('c chosen')
+        if (response.choice === 'Update an employee role') {
+            console.log('Update an employee role chosen')
         } 
     });
+
+
