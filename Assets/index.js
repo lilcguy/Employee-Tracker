@@ -58,10 +58,13 @@ inquirer
                     {
                     type: 'input',
                     message: 'What is the name of the department?',
-                    name: 'Department_add'
+                    name: 'add'
                     }
                 ]) .then((response) => {
-                    console.log(response);
+                    console.log(response); //HELP WITH INSERT (and also update) STATEMENT HERE --V
+                        db.query('INSERT INTO department (name) VALUES = ?', (response), (err, result) => {
+                            console.log(result);
+                        })
                 }); 
                 
         } 
