@@ -8,11 +8,10 @@ const db = mysql.createConnection(
       host: 'localhost',
       user: 'root', //mysql username
       password: 'xj9?c011n', //mysql password
-      database: 'books_db'
+      database: '12_db'
     },
-    console.log(`Connected to the books_db database.`)
+    console.log(`Connected to the 12_db database.`)
   );
-
 
 
 
@@ -21,7 +20,7 @@ inquirer
         {
             type: 'list',
             message: 'What would you like to do?',
-            choices: ['View All Departments', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'update an employee role'],
+            choices: ['View All Departments', 'View all roles', 'View all employees', 'Add a department', 'Add a role', 'Add an employee', 'update an employee role'],
             name: 'choice'
         }
     ])
@@ -30,22 +29,50 @@ inquirer
         console.log(response);
 
         if (response.choice === 'View All Departments') {
-            console.log('View All Departments chosen')
+            console.log('View All Departments chosen');
+               db.query('SELECT * FROM department', function (err, results) {
+                console.log(results);
+               })
+                
+
         }
+
+        if (response.choice === 'View all roles') {
+            console.log('View All roles chosen');
+               db.query('SELECT * FROM role', function (err, results) {
+                console.log(results);
+               })
+                
+
+        }
+
         if (response.choice === 'View all employees') {
-            console.log('View all employees chosen')
+            console.log('View all employees chosen');
+                db.query('SELECT * FROM employee', function (err, results) {
+                    console.log(results);
+                })
         }
         if (response.choice === 'Add a department') {
-            console.log('Add a department chosen')
+            console.log('Add a department chosen');
+                inquirer.prompt([
+                    {
+                    type: 'input',
+                    message: 'What is the name of the department?',
+                    name: 'Department_add'
+                    }
+                ]) .then((response) => {
+                    console.log(response);
+                }); 
+                
         } 
         if (response.choice === 'Add a role') {
-            console.log('Add a role chosen')
+            console.log('Add a role chosen');
         } 
         if (response.choice === 'Add an employee') {
-            console.log('Add an employee chosen')
+            console.log('Add an employee chosen');
         } 
         if (response.choice === 'Update an employee role') {
-            console.log('Update an employee role chosen')
+            console.log('Update an employee role chosen');
         } 
     });
 
