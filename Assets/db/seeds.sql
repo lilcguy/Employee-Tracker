@@ -18,8 +18,8 @@ VALUES ('Production Team Lead', 10.1, 1),
         ('Accounting Team Member', 10.87, 3);
 
 
-INSERT INTO employee (first_name, last_name, role_id)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES 
-        ('Peter', 'Grenson', 1),
-        ('Mary', 'Canelope', 4),
-        ('Kansas', 'Bangus', 7);
+        ('Peter', 'Grenson', 1, 1),
+        ('Mary', 'Canelope', 4, 2),
+        ('Kansas', 'Bangus', 7, 3);

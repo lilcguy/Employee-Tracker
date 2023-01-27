@@ -25,35 +25,54 @@ inquirer
         }
     ])
 
-    .then((response) => {
-        console.log(response);
+    .then((response) => { 
+        //console.log(response);
 
-        if (response.choice === 'View All Departments') {
-            console.log('View All Departments chosen');
+        if (response.choice === 'View All Departments') { 
+            console.log('Viewing all departments.');
                db.query('SELECT * FROM department', function (err, results) {
-                console.log(results);
+                departments = [];
+                for (let i=0; i < results.length; i++) {
+                    let currResult = results[i];
+                    departments.push({id: currResult.id, name: currResult.name});
+                }
+                console.table(departments);
+                //console.log(results);
+                
                })
                 
 
         }
 
-        if (response.choice === 'View all roles') {
-            console.log('View All roles chosen');
+        if (response.choice === 'View all roles') { 
+            console.log('Viewing All roles.');
                db.query('SELECT * FROM role', function (err, results) {
-                console.log(results);
+                roles = [];
+                for (let i=0; i < results.length; i++) {
+                    let currResult = results[i];
+                    roles.push({id: currResult.id, title: currResult.title, salary: currResult.salary, department_id: currResult.department_id});
+                }
+                console.table(roles);
+                
                })
                 
 
         }
 
-        if (response.choice === 'View all employees') {
-            console.log('View all employees chosen');
+        if (response.choice === 'View all employees') { //add c table
+            console.log('Viewing all employees.');
                 db.query('SELECT * FROM employee', function (err, results) {
-                    console.log(results);
+                    employees = [];
+                for (let i=0; i < results.length; i++) {
+                    let currResult = results[i];
+                    employees.push({id: currResult.id, name: currResult.first_name + " " + currResult.last_name, role_id: currResult.role_id, manager_id: currResult.manager_id });
+                }
+                console.table(employees);
+                    
                 })
         }
         if (response.choice === 'Add a department') {
-            console.log('Add a department chosen');
+            console.log('Adding a department.');
                 inquirer.prompt([
                     {
                     type: 'input',
@@ -62,33 +81,43 @@ inquirer
                     }
                     
                 ]) .then((response) => {
-                    console.log(response); //HELP WITH INSERT (and also update) STATEMENT HERE --V
+                    //console.log(response); 
                         db.query('INSERT INTO department (name) VALUES (?)', response.department, function (err, results) {
-                            console.log(results);
+                            console.log("Added a department: " + response.department);
                         })
                         
                 }); 
                 
         } 
         if (response.choice === 'Add a role') {
-            console.log('Add a role chosen');
+            console.log('Adding a role.');
                 inquirer.prompt([
                     {
                         type: 'input',
                         message: 'What is the title of the role?',
-                        title: 'role'
+                        name: 'role'
+                    },
+                    {
+                        type: 'number',
+                        message: 'What is the salary of this role?',
+                        name: 'salary'
+                    },
+                    {
+                        type: 'input',
+                        message: 'What is the department ID?',
+                        name: 'department_id'
                     }
                 ]) .then((response) => {
-                    db.query('INSERT INTO role (title) VALUES (?)', response.title, function (err, results) {
-                        console.log(results);
-                    });
+                    db.query('INSERT INTO role (title, salary, department_id) VALUES (?,?,?)', [response.role, response.salary, response.department_id]), function (err, results) {
+                        console.log("Added a role: " + results.role);
+                    };
                 });
 
                 
         } 
         if (response.choice === 'Add an employee') {
 
-            console.log('Add an employee chosen');
+            console.log('Adding an employee.');
                 inquirer.prompt([
                     {
                         type: 'input',
@@ -102,26 +131,17 @@ inquirer
                         name: 'employee_last'
                     }
                 ]) .then((response) => {
-                    console.log(response.employee_first, response.employee_last);
+                    //console.log(response.employee_first, response.employee_last);
                     
-                    db.query('INSERT INTO employee (first_name, last_name) VALUES (?,?) ', [response.employee_first, response.employee_last],  function (err, results) {
-                        console.log(results);
-                    });
+                    db.query('INSERT INTO employee (first_name, last_name) VALUES (?,?) ', [response.employee_first, response.employee_last]);
+                
                     
                 }
             );
         }
         if (response.choice === 'update an employee role') {
-            console.log('Update an employee role chosen');
-            // Run a query to get all users
-            // first_name + last_name
-            // SELECT name, manfacturer, id
-            //   FROM products
-            // => resultSet
-            // items = []
-            // for (let i = 0; i < resultSet.length; i++) {
-            //      items.push({ name: product.manufacturer + product.name, value: product.id })
-            // }
+            console.log('Updating an employee role.');
+            
             db.query('SELECT first_name, last_name, id FROM employee', function (err, results) {
 
                 users = [];
@@ -133,7 +153,7 @@ inquirer
                     inquirer.prompt([
                         {
                             type: 'list',
-                            message: 'What is the ID of the employee?',
+                            message: 'What is the name of the employee?',
                             name: 'employee_id',
                             choices: users
                         },
@@ -143,9 +163,9 @@ inquirer
                             name: 'role_id'
                         }
                     ]) .then((response) => {
-                        console.log(response.employee_id, response.role_id);
+                        //console.log(response.employee_id, response.role_id);
                             db.query('UPDATE employee SET role_id = ? WHERE id = ?', [response.role_id, response.employee_id], function (err, results) {
-                                console.log(results);
+                                console.log("Updated employee role to: " + response.role_id + ".");
                             })
                     })
             }
@@ -155,8 +175,6 @@ inquirer
     
     });
 
-//add cTable functionality
-//update: set update table name set ?, where clause
-//column to set 
+
 
 
