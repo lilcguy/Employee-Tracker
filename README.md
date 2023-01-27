@@ -16,8 +16,8 @@ Run the command 'npm i' in the terminal to acquire the required dependencies. Af
 After installation, run the node index.js command in the terminal. From there, you can fulfill administrative duties with the tool.
 See the screenshots below for examples of usage:
 
-![Add role, view role](./assets/screenshots/1.png)
-![Add employee, view employees](./assets/screenshots/2.png)
-![update employee, view employees](./assets/screenshots/3.png)
-![viewing](./assets/screenshots/4.png)
+![Add role, view role](./assets/1.png)
+![Add employee, view employees](./assets/2.png)
+![update employee, view employees](./assets/3.png)
+![viewing](./assets/4.png)
 
