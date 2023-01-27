@@ -58,25 +58,105 @@ inquirer
                     {
                     type: 'input',
                     message: 'What is the name of the department?',
-                    name: 'add'
+                    name: 'department'
                     }
+                    
                 ]) .then((response) => {
                     console.log(response); //HELP WITH INSERT (and also update) STATEMENT HERE --V
-                        db.query('INSERT INTO department (name) VALUES = ?', (response), (err, result) => {
-                            console.log(result);
+                        db.query('INSERT INTO department (name) VALUES (?)', response.department, function (err, results) {
+                            console.log(results);
                         })
+                        
                 }); 
                 
         } 
         if (response.choice === 'Add a role') {
             console.log('Add a role chosen');
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: 'What is the title of the role?',
+                        title: 'role'
+                    }
+                ]) .then((response) => {
+                    db.query('INSERT INTO role (title) VALUES (?)', response.title, function (err, results) {
+                        console.log(results);
+                    });
+                });
+
+                
         } 
         if (response.choice === 'Add an employee') {
+
             console.log('Add an employee chosen');
-        } 
-        if (response.choice === 'Update an employee role') {
+                inquirer.prompt([
+                    {
+                        type: 'input',
+                        message: 'What is the first name of the employee?',
+                        name: 'employee_first',
+                    
+                    },
+                    {
+                        type: 'input',
+                        message: 'What is the last name of the employee?',
+                        name: 'employee_last'
+                    }
+                ]) .then((response) => {
+                    console.log(response.employee_first, response.employee_last);
+                    
+                    db.query('INSERT INTO employee (first_name, last_name) VALUES (?,?) ', [response.employee_first, response.employee_last],  function (err, results) {
+                        console.log(results);
+                    });
+                    
+                }
+            );
+        }
+        if (response.choice === 'update an employee role') {
             console.log('Update an employee role chosen');
+            // Run a query to get all users
+            // first_name + last_name
+            // SELECT name, manfacturer, id
+            //   FROM products
+            // => resultSet
+            // items = []
+            // for (let i = 0; i < resultSet.length; i++) {
+            //      items.push({ name: product.manufacturer + product.name, value: product.id })
+            // }
+            db.query('SELECT first_name, last_name, id FROM employee', function (err, results) {
+
+                users = [];
+                for (let i=0; i < results.length; i++) {
+                    let currResult = results[i];
+                    users.push({name: currResult.first_name + currResult.last_name, value: currResult.id})
+                }
+              
+                    inquirer.prompt([
+                        {
+                            type: 'list',
+                            message: 'What is the ID of the employee?',
+                            name: 'employee_id',
+                            choices: users
+                        },
+                        {
+                            type: 'input',
+                            message: 'What is the role ID of the new role?',
+                            name: 'role_id'
+                        }
+                    ]) .then((response) => {
+                        console.log(response.employee_id, response.role_id);
+                            db.query('UPDATE employee SET role_id = ? WHERE id = ?', [response.role_id, response.employee_id], function (err, results) {
+                                console.log(results);
+                            })
+                    })
+            }
+            )
+
         } 
+    
     });
+
+//add cTable functionality
+//update: set update table name set ?, where clause
+//column to set 
 
 
